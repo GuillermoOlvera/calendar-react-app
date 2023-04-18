@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { useUiStore } from '../../hooks';
+import { useEffect, useMemo, useState } from 'react';
+import { useCalendarStore, useUiStore } from '../../hooks';
 
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -30,7 +30,8 @@ Modal.setAppElement('#root');
 
 export const CalendarModal = () => {
 
-    const { isDateModalOpen, closeDateModal } = useUiStore()
+    const { isDateModalOpen, closeDateModal } = useUiStore();
+    const { activeEvent } = useCalendarStore();
     const [formSubmitted, setFormSubmitted] = useState(false);
 
     const [formValues, setFormValues] = useState({
@@ -50,16 +51,24 @@ export const CalendarModal = () => {
 
     }, [formValues.title, formSubmitted]);
 
+    useEffect(() => {
+
+        if( activeEvent !== null ) {
+            setFormValues({ ...activeEvent })
+        }
+
+    },[activeEvent]);
+
     const onInputChange = ({ target }) => {
         setFormValues({
             ...formValues,
             [target.name]: target.value
         })
-    }
+    };
 
     const onCloseModal = () => {
         closeDateModal();
-    }
+    };
 
     const onSubmit = (event) => {
         event.preventDefault();
