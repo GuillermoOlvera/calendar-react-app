@@ -79,7 +79,7 @@ export const CalendarModal = () => {
 
         if(isNaN(difference) || difference <= 0){
             Swal.fire('Incorrect dates', 'Please, review dates entered', 'error')
-            return
+            return;
         }
 
         if(formValues.title.length <= 0) return;
